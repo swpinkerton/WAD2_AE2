@@ -23,4 +23,43 @@ public class Min_Array_heap<Item> {
         Q=newArr;
         return(temp);
     }
+
+    private int LEFT(int i){
+        return(2*i)+1;
+    }
+
+    private int RIGHT(int i){
+        return(2*i)+2;
+    }
+
+    private void BUILD_MIN_HEAP(int[] Q){
+        for (int i = (Q.length/2) - 1; i >= 0; i-- ){
+            MIN_HEAPIFY(Q,i,Q.length);
+        }
+    }
+
+    private void MIN_HEAPIFY(int[] Q, int i, int n){
+        int smallest;
+        int l = LEFT(i);
+        int r = RIGHT(i);
+        if(l<n && Q[l] < Q[i]){
+            smallest = l;
+        }
+        else{
+            smallest = i;
+        }
+        if(l<n && Q[r] < Q[i]){
+            smallest = r;
+        }
+        if(smallest != i){
+            SWAP(Q, i, smallest);
+            MIN_HEAPIFY(Q,smallest,n);
+        }
+    }
+
+    private void SWAP(int[] Q, int i1, int i2){
+        int temp = Q[i1];
+        Q[i1] = Q[i2];
+        Q[i2] = temp;
+    }
 }
