@@ -7,6 +7,7 @@ public class Min_Array_heap<Item> {
         }
         else{
             Q[Q.length] = x;
+            MIN_HEAPIFY(Q, Q.length-1, Q.length);
         }
     }
 
