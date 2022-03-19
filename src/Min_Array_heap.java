@@ -2,19 +2,19 @@ public class Min_Array_heap {
     static private int[] Q = new int[100];
     private static int length = 0;
 
-    private static void INSERT(int[] Q, int x) {
-        Q[length] = x;
+    private void INSERT(int x) {
+        this.Q[length] = x;
         length += 1;
         moveUp(length - 1);
     }
 
-    private static int MIN(int[] Q) {
-        return (Q[0]);
+    private int MIN() {
+        return (this.Q[0]);
     }
 
-    private static int EXTRACT_MIN(int[] Q) {
+    private int EXTRACT_MIN() {
         int temp = Q[0];
-        Q[0] = Q[length-1];
+        this.Q[0] = this.Q[length-1];
         length = length -1;
         moveDown(0);
         return (temp);
@@ -64,61 +64,40 @@ public class Min_Array_heap {
             moveDown(minI);
         }
     }
+    
+    private int getInstance(int i) {
+        return(this.Q[i]);
+    }
 
     public static void main(String[] args)
     {
-
-  /*           45
-            /        \
-           31      14
-          /  \    /  \
-         13  20  7   11
-        /  \
-       12   7
-    Create a priority queue shown in
-    example in a binary max heap form.
-    Queue will be represented in the
-    form of array as:
-    45 31 14 13 20 7 11 12 7 */
-
-        // Insert the element to the
-        // priority queue
-        INSERT(Q,45);
-        INSERT(Q,20);
-        INSERT(Q,14);
-        INSERT(Q,12);
-        INSERT(Q,31);
-        INSERT(Q,7);
-        INSERT(Q,11);
-        INSERT(Q,13);
-        INSERT(Q,7);
+        Min_Array_heap Q = new Min_Array_heap();
+        Q.INSERT(10);
+        Q.INSERT(15);
+        Q.INSERT(7);
+        Q.INSERT(9);
+        Q.INSERT(4);
+        Q.INSERT(13);
 
         int i = 0;
-
-        // Priority queue before extracting max
-        System.out.print("Priority Queue : ");
-        while (i <= length-1)
-        {
-            System.out.print(Q[i] + " ");
+        System.out.print("Queue : ");
+        while (i <= length-1) {
+            System.out.print(Q.getInstance(i) + " ");
             i++;
         }
-
         System.out.print("\n");
-
-        // Node with maximum priority
-        System.out.print("Node with maximum priority : " +
-                EXTRACT_MIN(Q) + "\n");
-
-        // Priority queue after extracting max
-        System.out.print("Priority queue after " +
-                "extracting maximum : ");
+        System.out.print("min : " + Q.EXTRACT_MIN() + "\n");
+        System.out.print("min : " + Q.EXTRACT_MIN() + "\n");
+        System.out.print("min : " + Q.EXTRACT_MIN() + "\n");
+        System.out.print("min : " + Q.EXTRACT_MIN() + "\n");
+        System.out.print("min : " + Q.EXTRACT_MIN() + "\n");
+        System.out.print("min : " + Q.EXTRACT_MIN() + "\n");
+        System.out.print("queue after " + "extracting min : ");
         int j = 0;
-        while (j <= length-1)
-        {
-            System.out.print(Q[j] + " ");
+        while (j <= length-1) {
+            System.out.print(Q.getInstance(j) + " ");
             j++;
         }
-
         System.out.print("\n");
     }
 }
