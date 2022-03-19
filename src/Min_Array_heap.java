@@ -3,18 +3,18 @@ public class Min_Array_heap {
     private static int length = 0;
 
     private void INSERT(int x) {
-        this.Q[length] = x;
+        Q[length] = x;
         length += 1;
         moveUp(length - 1);
     }
 
     private int MIN() {
-        return (this.Q[0]);
+        return (Q[0]);
     }
 
     private int EXTRACT_MIN() {
         int temp = Q[0];
-        this.Q[0] = this.Q[length-1];
+        Q[0] = Q[length-1];
         length = length -1;
         moveDown(0);
         return (temp);
@@ -66,7 +66,7 @@ public class Min_Array_heap {
     }
     
     private int getInstance(int i) {
-        return(this.Q[i]);
+        return(Q[i]);
     }
 
     public static void main(String[] args)
