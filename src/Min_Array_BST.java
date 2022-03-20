@@ -1,118 +1,83 @@
 import java.util.ArrayList;
 public class Min_Array_BST {
     Node rootNode;
-    int[] arr = new int[100];
-    //Runs the insert Command
 
     public class Node {
         Node leftNode;
         Node rightNode;
         Node parentNode;
         int value;
-        //Constructor
-        Node(int n, Node parent) {
-            this.value = n;
-            this.parentNode = parent;
+        Node(int value, Node parentNode) {
+            this.value = value;
+            this.parentNode = parentNode;
         }
     }
 
-    private void insert (int n) {
-        if (this.rootNode == null) {
-            this.rootNode = new Node(n, null);
-        }
-        else {
-            AddNode(this.rootNode, n);
-        }
-
-    }
-
-    //Adds a node to the tree
-    private void AddNode(Node nodeInQuestion, int n) {
-        if (n < nodeInQuestion.value) {
-            if (nodeInQuestion.leftNode == null) {
-                nodeInQuestion.leftNode = new Node(n, nodeInQuestion);
+    //TBI stands for To Be Inserted
+    protected void insertNode(Node TBI, int value) {
+        if (value < TBI.value) {
+            if (TBI.leftNode == null) {
+                TBI.leftNode = new Node(value, TBI);
             }
             else {
-                AddNode(nodeInQuestion.leftNode, n);
+                insertNode(TBI.leftNode, value);
             }
         }
-        else if (n > nodeInQuestion.value) {
-            if (nodeInQuestion.rightNode == null) {
-                nodeInQuestion.rightNode = new Node(n, nodeInQuestion);
+        else if (value > TBI.value) {
+            if (TBI.rightNode == null) {
+                TBI.rightNode = new Node(value, TBI);
             }
             else {
-                AddNode(nodeInQuestion.rightNode, n);
+                insertNode(TBI.rightNode, value);
             }
         }
-        else {
-            System.out.println("You are a fool. You cannot have duplicate items in the Binary Tree.");
-        }
     }
 
-    //Minimum Function
-    private int min() {
-        Node n = this.rootNode;
-        while(n.leftNode != null) {
-            n = n.leftNode;
+    protected static Node nodeMin(Node node) {
+        while(node.leftNode != null) {
+            node = node.leftNode;
         }
-        return (n.value);
-    }
-
-    //nodemin
-    private static Node nodeMin(Node n) {
-        while(n.leftNode != null) {
-            n = n.leftNode;
-        }
-        return (n);
-    }
-
-    //Minimum Function
-    private int extract_min() {
-        Node n = this.rootNode;
-        while(n.leftNode != null) {
-            n = n.leftNode;
-        }
-        delete(this, n);
-        return (n.value);
+        return (node);
     }
 
     //Transplant Function
-    private static void Transplant(Min_Array_BST T, Node u, Node v) {
-        if (u.parentNode == null) {
-            T.rootNode = v;
+    protected static void Transplant(Min_Array_BST tree, Node node1, Node node2) {
+        if (node1.parentNode == null) {
+            tree.rootNode = node2;
         }
-        else if (u == u.parentNode.leftNode) {
-            u.parentNode.leftNode = v;
+        else if (node1 == node1.parentNode.leftNode) {
+            node1.parentNode.leftNode = node2;
         }
         else {
-            u.parentNode.rightNode = v;
+            node1.parentNode.rightNode = node2;
         }
-        if (v != null) {
-            v.parentNode = u.parentNode;
+        if (node2 != null) {
+            node2.parentNode = node1.parentNode;
         }
     }
 
-    private static void delete(Min_Array_BST T, Node z) {
-        if (z.leftNode == null) {
-            Transplant(T, z, z.rightNode);
+//    TBD stands for To Be Deleted
+    protected static void delete(Min_Array_BST tree, Node TBD) {
+        if (TBD.leftNode == null) {
+            Transplant(tree, TBD, TBD.rightNode);
         }
-        else if (z.rightNode == null) {
-            Transplant(T, z, z.leftNode);
+        else if (TBD.rightNode == null) {
+            Transplant(tree, TBD, TBD.leftNode);
         }
         else {
-            Node y = nodeMin(z.rightNode);
-            if (y.parentNode != z) {
-                Transplant(T, y, y.rightNode);
-                y.rightNode = z.rightNode;
+            Node y = nodeMin(TBD.rightNode);
+            if (y.parentNode != TBD) {
+                Transplant(tree, y, y.rightNode);
+                y.rightNode = TBD.rightNode;
                 y.rightNode.parentNode = y;
             }
-            Transplant(T, z, y);
-            y.leftNode = z.leftNode;
+            Transplant(tree, TBD, y);
+            y.leftNode = TBD.leftNode;
             y.leftNode.parentNode = y;
         }
     }
 
-    private static void printTree(Node node) {
+    protected static void printNodes(Node node) {
         ArrayList<Node> queue = new ArrayList<Node>();
         queue.add(node);
         while(!queue.isEmpty()) {
@@ -127,44 +92,58 @@ public class Min_Array_BST {
         }
     }
 
-    private static int findIndex(Min_Array_BST T, int n) {
-        int count = 0;
-        ArrayList<Node> queue = new ArrayList<Node>();
-        queue.add(T.rootNode);
-        while(!queue.isEmpty()) {
-            Node currentNode = queue.remove(0);
-            count++;
-            System.out.println(count);
-            if (n == currentNode.value) {
-                return count;
-            }
-            if (currentNode.leftNode != null) {
-                queue.add(currentNode.leftNode);
-            }
-            if (currentNode.rightNode != null) {
-                queue.add(currentNode.rightNode);
-            }
+    protected void insert(int value) {
+        if (this.rootNode == null) {
+            this.rootNode = new Node(value, null);
         }
-        return(0);
+        else {
+            insertNode(this.rootNode, value);
+        }
+    }
+
+    protected int MIN() {
+        Node node = this.rootNode;
+        while (node.leftNode != null) {
+            node = node.leftNode;
+        }
+        return (node.value);
+    }
+
+    protected int EXTRACT_MIN() {
+        Node node = this.rootNode;
+        while(node.leftNode != null) {
+            node = node.leftNode;
+        }
+        delete(this, node);
+        return (node.value);
     }
 
     public static void main(String[] args) {
         Min_Array_BST tree = new Min_Array_BST();
-        tree.insert(4);
-        tree.insert(10);
+        tree.insert(43);
         tree.insert(15);
-        tree.insert(7);
-        tree.insert(9);
-        tree.insert(13);
-        System.out.println("------");
-        printTree(tree.rootNode);
-        System.out.println("------");
-
-        System.out.println(tree.extract_min());
-        System.out.println(tree.extract_min());
-        System.out.println(tree.extract_min());
-        System.out.println(tree.extract_min());
-        System.out.println(tree.extract_min());
-        printTree(tree.rootNode);
+        tree.insert(22);
+        tree.insert(3);
+        tree.insert(4);
+        tree.insert(1);
+        tree.insert(12);
+        tree.insert(23);
+        tree.insert(18);
+        tree.insert(16);
+        System.out.println("__________");
+        printNodes(tree.rootNode);
+        System.out.println("__________");
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        System.out.println(tree.EXTRACT_MIN());
+        printNodes(tree.rootNode);
     }
 }
+
+
